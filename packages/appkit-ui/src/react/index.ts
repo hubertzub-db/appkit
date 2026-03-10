@@ -1,3 +1,4 @@
+export * from "./agent-chat";
 export * from "./charts";
 export * from "./genie";
 export * from "./hooks";

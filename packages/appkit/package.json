@@ -44,6 +44,30 @@
     "tarball": "rm -rf tmp && pnpm dist && npm pack ./tmp --pack-destination ./tmp",
     "typecheck": "tsc --noEmit"
   },
+  "peerDependencies": {
+    "@arizeai/openinference-instrumentation-langchain": ">=4.0.0",
+    "@databricks/langchainjs": ">=0.1.0",
+    "@langchain/core": ">=1.0.0",
+    "@langchain/langgraph": ">=1.0.0",
+    "@langchain/mcp-adapters": ">=1.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@arizeai/openinference-instrumentation-langchain": {
+      "optional": true
+    },
+    "@databricks/langchainjs": {
+      "optional": true
+    },
+    "@langchain/core": {
+      "optional": true
+    },
+    "@langchain/langgraph": {
+      "optional": true
+    },
+    "@langchain/mcp-adapters": {
+      "optional": true
+    }
+  },
   "dependencies": {
     "@databricks/lakebase": "workspace:*",
     "@databricks/sdk-experimental": "^0.16.0",
@@ -71,6 +95,7 @@
     "shared": "workspace:*",
     "vite": "npm:rolldown-vite@7.1.14",
     "ws": "^8.18.3",
+    "zod": "^4.1.13",
     "zod-to-ts": "^2.0.0"
   },
   "devDependencies": {

@@ -47,7 +47,14 @@ export {
 } from "./errors";
 // Plugin authoring
 export { Plugin, type ToPlugin, toPlugin } from "./plugin";
-export { analytics, genie, lakebase, server } from "./plugins";
+export { agent, analytics, genie, lakebase, server } from "./plugins";
+export type {
+  AgentInterface,
+  IAgentConfig,
+  InvokeParams,
+  ResponseStreamEvent,
+  StandardAgent,
+} from "./plugins/agent";
 // Registry types and utilities for plugin manifests
 export type {
   ConfigSchema,

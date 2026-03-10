@@ -18,6 +18,7 @@ import { Route as GenieRouteRouteImport } from './routes/genie.route'
 import { Route as DataVisualizationRouteRouteImport } from './routes/data-visualization.route'
 import { Route as ArrowAnalyticsRouteRouteImport } from './routes/arrow-analytics.route'
 import { Route as AnalyticsRouteRouteImport } from './routes/analytics.route'
+import { Route as AgentRouteRouteImport } from './routes/agent.route'
 import { Route as IndexRouteImport } from './routes/index'
 
 const TypeSafetyRouteRoute = TypeSafetyRouteRouteImport.update({
@@ -65,6 +66,11 @@ const AnalyticsRouteRoute = AnalyticsRouteRouteImport.update({
   path: '/analytics',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AgentRouteRoute = AgentRouteRouteImport.update({
+  id: '/agent',
+  path: '/agent',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -73,6 +79,7 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/agent': typeof AgentRouteRoute
   '/analytics': typeof AnalyticsRouteRoute
   '/arrow-analytics': typeof ArrowAnalyticsRouteRoute
   '/data-visualization': typeof DataVisualizationRouteRoute
@@ -85,6 +92,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/agent': typeof AgentRouteRoute
   '/analytics': typeof AnalyticsRouteRoute
   '/arrow-analytics': typeof ArrowAnalyticsRouteRoute
   '/data-visualization': typeof DataVisualizationRouteRoute
@@ -98,6 +106,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/agent': typeof AgentRouteRoute
   '/analytics': typeof AnalyticsRouteRoute
   '/arrow-analytics': typeof ArrowAnalyticsRouteRoute
   '/data-visualization': typeof DataVisualizationRouteRoute
@@ -112,6 +121,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/agent'
     | '/analytics'
     | '/arrow-analytics'
     | '/data-visualization'
@@ -124,6 +134,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/agent'
     | '/analytics'
     | '/arrow-analytics'
     | '/data-visualization'
@@ -136,6 +147,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/agent'
     | '/analytics'
     | '/arrow-analytics'
     | '/data-visualization'
@@ -149,6 +161,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AgentRouteRoute: typeof AgentRouteRoute
   AnalyticsRouteRoute: typeof AnalyticsRouteRoute
   ArrowAnalyticsRouteRoute: typeof ArrowAnalyticsRouteRoute
   DataVisualizationRouteRoute: typeof DataVisualizationRouteRoute
@@ -225,6 +238,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AnalyticsRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/agent': {
+      id: '/agent'
+      path: '/agent'
+      fullPath: '/agent'
+      preLoaderRoute: typeof AgentRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -237,6 +257,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AgentRouteRoute: AgentRouteRoute,
   AnalyticsRouteRoute: AnalyticsRouteRoute,
   ArrowAnalyticsRouteRoute: ArrowAnalyticsRouteRoute,
   DataVisualizationRouteRoute: DataVisualizationRouteRoute,
