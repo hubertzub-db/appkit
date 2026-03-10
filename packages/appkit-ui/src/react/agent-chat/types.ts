@@ -48,6 +48,8 @@ export interface UseAgentChatReturn {
   input: string;
   setInput: (value: string) => void;
   handleSubmit: (e: React.FormEvent) => void;
+  /** Send a message programmatically (e.g. from ChatInput onSend). */
+  sendMessage: (content: string) => void;
   /** Messages + current streaming state for display */
   displayMessages: ChatMessage[];
   /** True when the last message is still streaming text */

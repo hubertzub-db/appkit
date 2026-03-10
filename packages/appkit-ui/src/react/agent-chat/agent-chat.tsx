@@ -1,6 +1,9 @@
-import { useEffect, useRef } from "react";
 import { cn } from "../lib/utils";
-import { Button, Card } from "../ui";
+import {
+  ChatEmptyState,
+  ChatInput,
+  ChatScrollArea,
+} from "../shared/shared-chat";
 import { AgentChatMessage } from "./agent-chat-message";
 import type { AgentChatProps, ChatMessage } from "./types";
 import { useAgentChat } from "./use-agent-chat";
@@ -12,56 +15,38 @@ export function AgentChat({
   emptyMessage = "Send a message to start.",
   className,
 }: AgentChatProps) {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const {
-    displayMessages,
-    loading,
-    input,
-    setInput,
-    handleSubmit,
-    isStreamingText,
-  } = useAgentChat({ invokeUrl });
-
-  const contentLength = displayMessages.length;
-  // biome-ignore lint/correctness/useExhaustiveDependencies: deps used as triggers for auto-scroll
-  useEffect(() => {
-    scrollRef.current?.scrollTo({
-      top: scrollRef.current.scrollHeight,
-      behavior: "smooth",
-    });
-  }, [contentLength, isStreamingText]);
+  const { displayMessages, loading, sendMessage, isStreamingText } =
+    useAgentChat({ invokeUrl });
 
   return (
-    <div className={cn("flex flex-col min-h-0", className)}>
-      <Card className="flex-1 flex flex-col min-h-0 p-4">
-        <div ref={scrollRef} className="flex-1 overflow-y-auto space-y-4 mb-4">
-          {displayMessages.length === 0 && (
-            <p className="text-muted-foreground text-sm">{emptyMessage}</p>
+    <div className={cn("flex flex-col h-full overflow-hidden", className)}>
+      <ChatScrollArea
+        scrollDeps={[displayMessages.length, isStreamingText]}
+        className="p-4"
+      >
+        <div className="flex flex-col gap-4">
+          {displayMessages.length === 0 ? (
+            <div className="flex-1 min-h-[12rem] flex">
+              <ChatEmptyState message={emptyMessage} />
+            </div>
+          ) : (
+            displayMessages.map((msg, i) => (
+              <MessageItem
+                key={`msg-${i}-${msg.role}`}
+                message={msg}
+                isLast={i === displayMessages.length - 1}
+                isStreaming={isStreamingText}
+              />
+            ))
           )}
-          {displayMessages.map((msg, i) => (
-            <MessageItem
-              key={`msg-${i}-${msg.role}`}
-              message={msg}
-              isLast={i === displayMessages.length - 1}
-              isStreaming={isStreamingText}
-            />
-          ))}
         </div>
+      </ChatScrollArea>
 
-        <form onSubmit={handleSubmit} className="flex gap-2">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder={placeholder}
-            className="flex-1 rounded-lg border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            disabled={loading}
-          />
-          <Button type="submit" disabled={loading || !input.trim()}>
-            {loading ? "..." : "Send"}
-          </Button>
-        </form>
-      </Card>
+      <ChatInput
+        onSend={sendMessage}
+        disabled={loading}
+        placeholder={placeholder}
+      />
     </div>
   );
 }

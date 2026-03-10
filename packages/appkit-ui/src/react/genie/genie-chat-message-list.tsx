@@ -1,6 +1,5 @@
-import { useEffect, useRef } from "react";
 import { cn } from "../lib/utils";
-import { ScrollArea } from "../ui/scroll-area";
+import { ChatScrollArea } from "../shared/shared-chat";
 import { Skeleton } from "../ui/skeleton";
 import { Spinner } from "../ui/spinner";
 import { GenieChatMessage } from "./genie-chat-message";
@@ -45,21 +44,11 @@ export function GenieChatMessageList({
   status,
   className,
 }: GenieChatMessageListProps) {
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  // Scroll only the ScrollArea viewport, not the page
-  // biome-ignore lint/correctness/useExhaustiveDependencies: intentional triggers for auto-scroll
-  useEffect(() => {
-    const viewport = scrollRef.current?.querySelector<HTMLElement>(
-      '[data-slot="scroll-area-viewport"]',
-    );
-    if (viewport) {
-      viewport.scrollTop = viewport.scrollHeight;
-    }
-  }, [messages.length, status]);
-
   return (
-    <ScrollArea ref={scrollRef} className={cn("flex-1 min-h-0 p-4", className)}>
+    <ChatScrollArea
+      scrollDeps={[messages.length, status]}
+      className={cn("p-4", className)}
+    >
       <div className="flex flex-col gap-4">
         {status === "loading-history" && messages.length === 0 && (
           <div className="flex flex-col gap-4">
@@ -86,6 +75,6 @@ export function GenieChatMessageList({
           </div>
         )}
       </div>
-    </ScrollArea>
+    </ChatScrollArea>
   );
 }

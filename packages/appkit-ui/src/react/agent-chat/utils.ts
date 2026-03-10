@@ -1,4 +1,4 @@
-import type { AssistantPart, ChatMessage } from "./types";
+import type { ChatMessage } from "./types";
 
 /** Serialize chat message for the Responses API request body. */
 export function serializeForApi(msg: ChatMessage): Record<string, unknown> {
@@ -23,10 +23,4 @@ export function serializeForApi(msg: ChatMessage): Record<string, unknown> {
   return { role: "assistant", content };
 }
 
-export function tryFormatJson(s: string): string {
-  try {
-    return JSON.stringify(JSON.parse(s), null, 2);
-  } catch {
-    return s;
-  }
-}
+export { tryFormatJson } from "../shared/shared-chat";

@@ -22,13 +22,12 @@ export function useAgentChat(
   const [loading, setLoading] = useState(false);
   const [input, setInput] = useState("");
 
-  const handleSubmit = useCallback(
-    async (e: React.FormEvent) => {
-      e.preventDefault();
-      const text = input.trim();
-      if (!text || loading) return;
+  const doSubmit = useCallback(
+    async (text: string) => {
+      const trimmed = text.trim();
+      if (!trimmed || loading) return;
 
-      const userMessage: ChatMessage = { role: "user", content: text };
+      const userMessage: ChatMessage = { role: "user", content: trimmed };
       setInput("");
       setMessages((prev) => [...prev, userMessage]);
       setLoading(true);
@@ -143,7 +142,22 @@ export function useAgentChat(
         setLoading(false);
       }
     },
-    [input, loading, messages, invokeUrl],
+    [loading, messages, invokeUrl],
+  );
+
+  const handleSubmit = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      doSubmit(input.trim());
+    },
+    [input, doSubmit],
+  );
+
+  const sendMessage = useCallback(
+    (content: string) => {
+      doSubmit(content);
+    },
+    [doSubmit],
   );
 
   const displayMessages = useMemo<ChatMessage[]>(() => {
@@ -168,6 +182,7 @@ export function useAgentChat(
     input,
     setInput,
     handleSubmit,
+    sendMessage,
     displayMessages,
     isStreamingText,
   };
